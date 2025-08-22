@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Sheets Dashboard</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background: #f4f6f8;
+    }
+
+    header {
+      background: #2c3e50;
+      color: white;
+      padding: 1.2rem;
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: bold;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    /* Login Screen */
+    #login-screen {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    #login-box {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    #login-box input {
+      display: block;
+      margin: 0.5rem auto;
+      padding: 0.5rem;
+      width: 80%;
+      font-size: 1rem;
+    }
+    #login-box button {
+      background: #3498db;
+      border: none;
+      color: white;
+      padding: 0.7rem 1.5rem;
+      margin-top: 1rem;
+      cursor: pointer;
+      font-size: 1rem;
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+    #login-box button:hover {
+      background: #2980b9;
+    }
+    #error {
+      color: red;
+      margin-top: 0.5rem;
+    }
+
+    /* Tabs & Dashboard */
+    #dashboard {
+      display: none;
+    }
+    .tabs {
+      display: flex;
+      justify-content: center;
+      background: #ecf0f1;
+      padding: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .tabs button {
+      background: #3498db;
+      border: none;
+      color: white;
+      padding: 0.7rem 1.5rem;
+      margin: 0.3rem;
+      cursor: pointer;
+      font-size: 1rem;
+      border-radius: 8px;
+      transition: 0.3s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .tabs button:hover {
+      background: #2980b9;
+    }
+    .tabs button.active {
+      background: #1abc9c;
+      transform: scale(1.05);
+    }
+    iframe {
+      width: 100%;
+      height: calc(100vh - 110px);
+      border: none;
+      display: none;
+    }
+    iframe.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <!-- Login Screen -->
+  <div id="login-screen">
+    <div id="login-box">
+      <h2>Login</h2>
+      <input type="text" id="username" placeholder="Username">
+      <input type="password" id="password" placeholder="Password">
+      <button onclick="checkLogin()">Login</button>
+      <div id="error"></div>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="dashboard">
+    <header>📊 My Dashboard</header>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="active" onclick="showSheet(0)">Main Sheet</button>
+      <button onclick="showSheet(1)">Sangomar</button>
+    </div>
+
+    <!-- Google Sheets -->
+    <iframe 
+      class="active"
+      src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQbIJQ91uJo4Bk90q8QVoJu0lFT0QaK_J1_T4c_qj6cPLDt0QGXZfVKJbUqLKqSIr2bIO9lxbedQZYo/pubhtml?gid=754372757&amp;single=true&amp;widget=true&amp;headers=false">
+    </iframe>
+
+    <iframe 
+      src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQbIJQ91uJo4Bk90q8QVoJu0lFT0QaK_J1_T4c_qj6cPLDt0QGXZfVKJbUqLKqSIr2bIO9lxbedQZYo/pubhtml?gid=1941366550&amp;single=true&amp;widget=true&amp;headers=false">
+    </iframe>
+  </div>
+
+  <script>
+    // Hardcoded credentials (change these!)
+    const USERS = {
+      "allan": "james!",
+      "declan": "green!",
+      "dave": "fouracre!",
+      "jamie": "shell"
+    };
+
+    function checkLogin() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      const error = document.getElementById("error");
+
+      if (USERS[username] && USERS[username] === password) {
+        document.getElementById("login-screen").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+        console.log("✅ User logged in:", username); // shows in browser console
+      } else {
+        error.textContent = "❌ Invalid username or password";
+      }
+    }
+
+    function showSheet(index) {
+      const iframes = document.querySelectorAll("iframe");
+      const buttons = document.querySelectorAll(".tabs button");
+      iframes.forEach((frame, i) => {
+        frame.classList.toggle("active", i === index);
+      });
+      buttons.forEach((btn, i) => {
+        btn.classList.toggle("active", i === index);
+      });
+    }
+  </script>
+</body>
+</html>
